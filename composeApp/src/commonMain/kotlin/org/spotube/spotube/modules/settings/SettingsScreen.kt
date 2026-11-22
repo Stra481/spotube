@@ -128,12 +128,6 @@ private fun CompactSettingsContent(
                 appearanceSection(
                     settings = settings,
                     settingsViewModel = settingsViewModel)
-                jamSection(
-                    settings = settings,
-                    navigationCommands = navigatorCommands)
-                cacheSection(
-                    settings = settings,
-                    settingsViewModel = settingsViewModel)
                 downloadsSection(
                     settings = settings,
                     settingsViewModel = settingsViewModel)
@@ -142,9 +136,6 @@ private fun CompactSettingsContent(
                         settings = settings,
                         settingsViewModel = settingsViewModel)
                 }
-                supportSection(
-                    settings = settings,
-                    settingsViewModel = settingsViewModel)
                 updatesSection(
                     settings = settings,
                     settingsViewModel = settingsViewModel)
