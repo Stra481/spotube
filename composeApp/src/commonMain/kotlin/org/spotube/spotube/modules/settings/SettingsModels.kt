@@ -34,8 +34,8 @@ data class UserSettings(
     // Stored under a new name: the old "language" field was persisted as EN for everyone while
     // it had no effect, so reading it would force English on existing users.
     @SerialName("appLanguage")
-    val language: SupportedLanguages = SupportedLanguages.SYSTEM,
-    val country: CountryCode = CountryCode.BD,
+    val language: SupportedLanguages = SupportedLanguages.EN,
+    val country: CountryCode = CountryCode.CH,
 
     // Appearance
     val theme: Theme = Theme.SYSTEM,

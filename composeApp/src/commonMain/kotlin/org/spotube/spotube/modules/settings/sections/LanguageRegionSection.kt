@@ -19,18 +19,14 @@ package org.spotube.spotube.modules.settings.sections
 
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
-import org.spotube.spotube.modules.settings.CountryCode
 import org.spotube.spotube.modules.settings.SettingsViewModel
 import org.spotube.spotube.modules.settings.SupportedLanguages
 import org.spotube.spotube.modules.settings.UserSettings
 import org.spotube.spotube.modules.settings.components.SelectionSettingCard
 import org.spotube.spotube.resources.iconsax.Iconsax
-import org.spotube.spotube.resources.iconsax.IconsaxGlobe
 import org.spotube.spotube.resources.iconsax.IconsaxLanguageSquare
 import org.jetbrains.compose.resources.stringResource
 import spotube.composeapp.generated.resources.Res
-import spotube.composeapp.generated.resources.settings_country_subtitle_current
-import spotube.composeapp.generated.resources.settings_country_title
 import spotube.composeapp.generated.resources.settings_language_subtitle_current
 import spotube.composeapp.generated.resources.settings_language_system_default
 import spotube.composeapp.generated.resources.settings_language_title
@@ -60,36 +56,13 @@ internal fun LazyListScope.languageRegionSection(
                         )
                     },
                     selectedOption = settings.language,
-                    options = SupportedLanguages.entries,
+                    options = SupportedLanguages.entries.filter {
+                        it.locale == "fr" || it.locale == "en"
+                    },
                     optionLabel = { languageLabel(it) },
                     onOptionSelected = { value ->
                         settingsViewModel.updateSettings {
                             copy(language = value)
-                        }
-                    },
-                    filter = { item, query -> item.label.contains(query, ignoreCase = true) })
-            },
-            {
-                SelectionSettingCard(
-                    title = stringResource(Res.string.settings_country_title),
-                    subtitle = stringResource(
-                        Res.string.settings_country_subtitle_current,
-                        settings.country.displayName
-                    ),
-                    icon = {
-                        SettingsItemIcon(
-                            Iconsax.IconsaxGlobe,
-                            stringResource(Res.string.settings_country_title)
-                        )
-                    },
-                    selectedOption = settings.country,
-                    options = CountryCode.entries,
-                    optionLabel = {
-                        stringResource(Res.string.settings_option_name_and_code, it.displayName, it.code)
-                    },
-                    onOptionSelected = { value ->
-                        settingsViewModel.updateSettings {
-                            copy(country = value)
                         }
                     },
                     filter = { item, query -> item.label.contains(query, ignoreCase = true) })
@@ -104,4 +77,3 @@ private fun languageLabel(language: SupportedLanguages): String =
     } else {
         stringResource(Res.string.settings_option_name_and_code, language.displayName, language.languageTag!!)
     }
-
