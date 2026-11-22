@@ -18,30 +18,15 @@
 package org.spotube.spotube.modules.settings.sections
 
 
-import org.spotube.millennium.composables.MillenniumIcon
 import androidx.compose.foundation.lazy.LazyListScope
-
-import org.spotube.spotube.core.ui.theming.AppTheme
 import androidx.compose.runtime.Composable
-import compose.icons.FeatherIcons
-import compose.icons.feathericons.ChevronRight
-import compose.icons.feathericons.Cast
-import compose.icons.feathericons.Radio
-import compose.icons.feathericons.Repeat
-import compose.icons.feathericons.Server
-import compose.icons.feathericons.Sliders
 import spotube.composeapp.generated.resources.*
 import org.spotube.spotube.core.navigation.NavigationCommands
-import org.spotube.spotube.core.navigation.Routes
 import org.spotube.spotube.modules.settings.SettingsViewModel
 import org.spotube.spotube.modules.settings.UserSettings
 import org.spotube.spotube.modules.settings.components.SelectionSettingCard
-import org.spotube.spotube.modules.settings.components.SettingCardItem
 import org.spotube.spotube.modules.settings.components.SwitchSettingCard
-import org.spotube.spotube.modules.settings.components.TextInputSettingCard
-import org.spotube.spotube.resources.iconsax.CustomServer
 import org.spotube.spotube.resources.iconsax.Iconsax
-import org.spotube.spotube.resources.iconsax.IconsaxForbidden
 import org.spotube.spotube.resources.iconsax.IconsaxMusicPlay
 import org.spotube.spotube.resources.iconsax.IconsaxRepeatArrow
 import org.spotube.spotube.resources.iconsax.IconsaxVerticalSetting
@@ -119,60 +104,6 @@ internal fun LazyListScope.playbackSection(
                     }
                 }
             )
-        }
-        addAll(remoteControlSettingCards(settings, settingsViewModel, requestLocalNetworkPermission))
-        add {
-            val error_whole_number = stringResource(Res.string.settings_error_whole_number)
-            val error_port_range = stringResource(Res.string.settings_error_port_range)
-
-            TextInputSettingCard(
-                title = stringResource(Res.string.settings_playback_port_title),
-                subtitle = stringResource(
-                    Res.string.settings_playback_port_subtitle_current,
-                    settings.playbackProxyServerPort
-                ),
-                icon = {
-                    SettingsItemIcon(Iconsax.CustomServer, stringResource(Res.string.settings_playback_port_title))
-                },
-                value = settings.playbackProxyServerPort.toString(),
-                dialogDescription = stringResource(Res.string.settings_playback_port_description),
-                placeholder = stringResource(Res.string.settings_playback_port_placeholder),
-                normalize = { it.trim() },
-                validate = { value ->
-                    val port = value.toIntOrNull()
-                    when {
-                        port == null -> error_whole_number
-                        port !in 1..65535 -> error_port_range
-                        else -> null
-                    }
-                },
-                onValueSaved = { value ->
-                    settingsViewModel.updateSettings {
-                        copy(playbackProxyServerPort = value.toInt())
-                    }
-                }
-            )
-        }
-        if (includeBlacklist) {
-            add {
-                SettingCardItem(
-                    title = stringResource(Res.string.settings_blacklist_title),
-                    subtitle = stringResource(Res.string.settings_blacklist_subtitle),
-                    icon = {
-                        SettingsItemIcon(
-                            Iconsax.IconsaxForbidden,
-                            stringResource(Res.string.settings_blacklist_title))
-                    },
-                    trailingContent = {
-                        MillenniumIcon(
-                            imageVector = FeatherIcons.ChevronRight,
-                            contentDescription = stringResource(Res.string.settings_blacklist_title),
-                            tint = AppTheme.colors.onSurfaceVariant)
-                    },
-                    onClick = {
-                        navigatorCommands.navigateTo(Routes.Blacklist)
-                    })
-            }
         }
     }
 

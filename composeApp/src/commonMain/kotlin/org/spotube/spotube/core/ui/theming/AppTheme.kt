@@ -42,6 +42,7 @@ import org.spotube.millennium.composables.MillenniumTopAppBarThemeProperties
 import org.spotube.millennium.composables.defaultMillenniumModalBottomSheetTheme
 import org.spotube.millennium.composables.defaultMillenniumTopAppBarTheme
 import org.spotube.millennium.theme.MillenniumColors
+import org.spotube.millennium.theme.MillenniumColorSchemes
 import org.spotube.millennium.theme.MillenniumDarkThemeComponents
 import org.spotube.millennium.theme.MillenniumLightThemeComponents
 import org.spotube.millennium.theme.MillenniumPalette
@@ -148,17 +149,17 @@ private fun style(
 )
 
 val AppDefaultTypography = AppTypography(
-    displaySmall = style(36, 44),
-    headlineLarge = style(32, 40),
-    headlineMedium = style(28, 36),
-    headlineSmall = style(24, 32),
-    titleLarge = style(22, 28, FontWeight.Medium),
-    titleMedium = style(16, 24, FontWeight.Medium),
-    titleSmall = style(14, 20, FontWeight.Medium),
+    displaySmall = style(36, 44, FontWeight.Bold),
+    headlineLarge = style(32, 40, FontWeight.Bold),
+    headlineMedium = style(28, 36, FontWeight.Bold),
+    headlineSmall = style(24, 32, FontWeight.SemiBold),
+    titleLarge = style(22, 28, FontWeight.SemiBold),
+    titleMedium = style(16, 24, FontWeight.SemiBold),
+    titleSmall = style(14, 20, FontWeight.SemiBold),
     bodyLarge = style(16, 24),
     bodyMedium = style(14, 20),
     bodySmall = style(12, 16),
-    labelLarge = style(14, 20, FontWeight.Medium),
+    labelLarge = style(14, 20, FontWeight.SemiBold),
     labelMedium = style(12, 16, FontWeight.Medium),
     labelSmall = style(11, 16, FontWeight.Medium)
 )
@@ -172,10 +173,36 @@ data class AppShapes(
 )
 
 val AppDefaultShapes = AppShapes(
-    small = RoundedCornerShape(8.dp),
-    medium = RoundedCornerShape(12.dp),
-    large = RoundedCornerShape(16.dp)
+    small = RoundedCornerShape(12.dp),
+    medium = RoundedCornerShape(18.dp),
+    large = RoundedCornerShape(28.dp)
 )
+
+/**
+ * Palette sombre plate inspirée de Silicon (bleu nuit + bleu électrique).
+ *
+ * accentTop et accentBottom sont identiques : le dégradé brillant des boutons
+ * devient donc un aplat. highlight est transparent : plus de liseré brillant.
+ */
+private val SiliconDarkColors = MillenniumColors(
+    background = Color(0xFF0A0C1F),
+    surface = Color(0xFF11142F),
+    raised = Color(0xFF151939),
+    inset = Color(0xFF0D1026),
+    text = Color(0xFFF5F7FF),
+    muted = Color(0xFF8E94B8),
+    border = Color(0xFF1F2450),
+    highlight = Color.Transparent,
+    accent = Color(0xFF5B6BFF),
+    accentTop = Color(0xFF3340F0),
+    accentBottom = Color(0xFF3340F0),
+    onAccent = Color.White,
+    success = Color(0xFF5EE6A8),
+    danger = Color(0xFFFF6B81),
+    scrim = Color(0xCC03040F),
+)
+
+private val SiliconColorSchemes = MillenniumColorSchemes(dark = SiliconDarkColors)
 
 val LocalAppColors =
     staticCompositionLocalOf { appColorsFrom(org.spotube.millennium.theme.MillenniumLightColors) }
@@ -214,6 +241,7 @@ fun SpotubeTheme(
     MillenniumTheme(
         dark = isDarkTheme,
         config = MillenniumThemeConfig(
+            colorSchemes = SiliconColorSchemes,
             palette = palette,
             dark = darkTheme.copy(
                 topAppBarTheme = MillenniumTopAppBarTheme(

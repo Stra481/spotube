@@ -68,16 +68,8 @@ private val SettingsDialogMinWidth = 720.dp
  */
 @Composable
 fun SettingsScreen(settingsViewModel: SettingsViewModel) {
-    val navigatorCommands: NavigationCommands = koinInject()
-
     Box(modifier = Modifier.fillMaxSize()) {
-        if (currentWindowWidthBreakpoint() isAtLeast WindowBreakpoints.Expanded) {
-            SettingsDialog(
-                settingsViewModel = settingsViewModel,
-                onDismiss = { navigatorCommands.pop(Routes.Settings) })
-        } else {
-            CompactSettingsScreen(settingsViewModel = settingsViewModel)
-        }
+        CompactSettingsScreen(settingsViewModel = settingsViewModel)
     }
 }
 
@@ -136,11 +128,6 @@ private fun CompactSettingsContent(
                 appearanceSection(
                     settings = settings,
                     settingsViewModel = settingsViewModel)
-                playbackSection(
-                    settings = settings,
-                    settingsViewModel = settingsViewModel,
-                    navigatorCommands = navigatorCommands,
-                    requestLocalNetworkPermission = requestLocalNetworkPermission)
                 jamSection(
                     settings = settings,
                     navigationCommands = navigatorCommands)
