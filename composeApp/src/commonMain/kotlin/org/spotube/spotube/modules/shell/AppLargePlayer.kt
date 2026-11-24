@@ -23,6 +23,8 @@ import org.spotube.spotube.resources.iconsax.IconsaxCd
 import org.spotube.spotube.resources.iconsax.IconsaxMoon
 import org.spotube.spotube.resources.iconsax.IconsaxInformation
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -356,15 +358,29 @@ fun AppLargePlayer(
                         ) {
                             MillenniumIcon(Iconsax.IconsaxPrevious, contentDescription = stringResource(Res.string.player_previous_content_description))
                         }
-                        MillenniumIconButton(
-                            onClick = ::onPlayPause,
-                            style = MillenniumIconButtonStyle.Primary
-                        ) {
-                            MillenniumIcon(
-                                if (playerUiState.isPlaying) Iconsax.IconsaxPause else Iconsax.IconsaxPlay,
-                                contentDescription = stringResource(if (playerUiState.isPlaying) Res.string.player_pause_content_description else Res.string.player_play_or_pause_content_description),
-                                tint = LocalTextStyle.current.color
+                        Box(modifier = Modifier.size(48.dp)) {
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.BottomEnd)
+                                    .size(44.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(Color(0xFF2B35F0))
                             )
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.TopStart)
+                                    .size(44.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(Color.White)
+                                    .clickable(onClick = ::onPlayPause),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                MillenniumIcon(
+                                    if (playerUiState.isPlaying) Iconsax.IconsaxPause else Iconsax.IconsaxPlay,
+                                    contentDescription = stringResource(if (playerUiState.isPlaying) Res.string.player_pause_content_description else Res.string.player_play_or_pause_content_description),
+                                    tint = Color(0xFF0A0C1F)
+                                )
+                            }
                         }
                         MillenniumIconButton(
                             onClick = ::onSkipNext,
