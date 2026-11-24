@@ -138,13 +138,6 @@ val sidebarTabs = tabs + listOf(
             )
         )
     ),
-    NavigationItem.Group(
-        Res.string.nav_group_connect,
-        items = listOf(
-            NavigationItem.Tab(Res.string.nav_devices, Iconsax.IconsaxMirrorScreenRegular, Routes.Devices),
-            NavigationItem.Tab(Res.string.jam_screen_title, Iconsax.IconsaxSoundTwotone, Routes.Jam)
-        )
-    )
 )
 val bottombarTabs = tabs + listOf(
     NavigationItem.Tab<Any>(Res.string.library_toolbar_compact_title, Iconsax.IconsaxMusicLibrary, Routes.Library),
@@ -188,7 +181,7 @@ fun App(
                 current.copy(lastSupportReminderEpochMs = now))
             return@LaunchedEffect
         }
-        if (!current.supportRemindersEnabled) return@LaunchedEffect
+        return@LaunchedEffect
         val last = current.lastSupportReminderEpochMs
         if (last == 0L) {
             settingsRepository.updateSettings(
