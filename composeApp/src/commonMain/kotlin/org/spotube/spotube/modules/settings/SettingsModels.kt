@@ -44,6 +44,7 @@ data class UserSettings(
     val bgColor2: Long = 0xFF1D2AB9,
     val bgDirection: Int = 45,
     val bgIntensity: Int = 73,
+    val accentColor: Long = 0xFF3340F0,
 
     // Playback
     val streamingMusicFormat: AudioFormat = defaultStreamingMusicFormat(),

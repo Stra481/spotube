@@ -250,11 +250,23 @@ fun SpotubeTheme(
 
     val darkTheme = MillenniumDarkThemeComponents
     val lightTheme = MillenniumLightThemeComponents
+    
+    val accent = Color(settings.accentColor)
+    val colorSchemes = remember(settings.accentColor) {
+        MillenniumColorSchemes(
+            dark = SiliconDarkColors.copy(
+                accent = lerp(accent, Color.White, 0.25f),
+                accentTop = accent,
+                accentBottom = accent,
+                onAccent = if (accent.luminance() > 0.5f) Color(0xFF0A0C1F) else Color.White
+            )
+        )
+    }
 
     MillenniumTheme(
         dark = isDarkTheme,
         config = MillenniumThemeConfig(
-            colorSchemes = SiliconColorSchemes,
+            colorSchemes = colorSchemes,
             palette = palette,
             dark = darkTheme.copy(
                 topAppBarTheme = MillenniumTopAppBarTheme(
