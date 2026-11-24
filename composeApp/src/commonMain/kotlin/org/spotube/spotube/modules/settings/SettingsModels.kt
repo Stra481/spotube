@@ -40,6 +40,10 @@ data class UserSettings(
     // Appearance
     val theme: Theme = Theme.SYSTEM,
     val palette: MillenniumPalette = MillenniumPalette.Blue,
+    val bgColor1: Long = 0xFF0A0C1F,
+    val bgColor2: Long = 0xFF1D2AB9,
+    val bgDirection: Int = 45,
+    val bgIntensity: Int = 73,
 
     // Playback
     val streamingMusicFormat: AudioFormat = defaultStreamingMusicFormat(),

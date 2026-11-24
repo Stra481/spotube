@@ -17,21 +17,32 @@
 
 package org.spotube.spotube.core.ui.theming
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.max
+import kotlin.math.sin
 
 import org.spotube.spotube.modules.settings.Theme
 import org.spotube.spotube.modules.settings.UserSettings
@@ -183,12 +194,14 @@ val AppDefaultShapes = AppShapes(
  *
  * accentTop et accentBottom sont identiques : le dégradé brillant des boutons
  * devient donc un aplat. highlight est transparent : plus de liseré brillant.
+ * background est transparent et surface/raised/inset sont semi-transparents :
+ * le fond en dégradé dessiné dans SpotubeTheme se voit derrière les panneaux.
  */
 private val SiliconDarkColors = MillenniumColors(
-    background = Color(0xFF0A0C1F),
-    surface = Color(0xFF11142F),
-    raised = Color(0xFF151939),
-    inset = Color(0xFF0D1026),
+    background = Color.Transparent,
+    surface = Color(0xCC11142F),
+    raised = Color(0xD9151939),
+    inset = Color(0xB30D1026),
     text = Color(0xFFF5F7FF),
     muted = Color(0xFF8E94B8),
     border = Color(0xFF1F2450),
@@ -266,9 +279,30 @@ fun SpotubeTheme(
             CompositionLocalProvider(
                 LocalAppColors provides colors,
                 LocalAppTypography provides AppDefaultTypography,
-                LocalAppShapes provides AppDefaultShapes,
-                content = content
-            )
+                LocalAppShapes provides AppDefaultShapes
+            ) {
+                val c1 = Color(settings.bgColor1)
+                val c2 = lerp(c1, Color(settings.bgColor2), settings.bgIntensity / 100f)
+                val rad = settings.bgDirection * PI / 180.0
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .drawBehind {
+                            val dx = cos(rad).toFloat()
+                            val dy = sin(rad).toFloat()
+                            val half = max(size.width, size.height) / 2f
+                            drawRect(
+                                Brush.linearGradient(
+                                    colors = listOf(c1, c2),
+                                    start = center - Offset(dx, dy) * half,
+                                    end = center + Offset(dx, dy) * half
+                                )
+                            )
+                        }
+                ) {
+                    content()
+                }
+            }
         }
     }
 }
