@@ -32,6 +32,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.TextStyle
@@ -47,13 +48,16 @@ import kotlin.math.sin
 import org.spotube.spotube.modules.settings.Theme
 import org.spotube.spotube.modules.settings.UserSettings
 import org.spotube.millennium.composables.MillenniumModalBottomSheetTheme
+import org.spotube.millennium.composables.MillenniumSidebarTheme
 import org.spotube.millennium.composables.MillenniumTooltipHost
 import org.spotube.millennium.composables.MillenniumTopAppBarTheme
 import org.spotube.millennium.composables.MillenniumTopAppBarThemeProperties
 import org.spotube.millennium.composables.defaultMillenniumModalBottomSheetTheme
+import org.spotube.millennium.composables.defaultMillenniumSidebarTheme
 import org.spotube.millennium.composables.defaultMillenniumTopAppBarTheme
 import org.spotube.millennium.theme.MillenniumColors
 import org.spotube.millennium.theme.MillenniumColorSchemes
+import org.spotube.millennium.theme.MillenniumControlStateProperty
 import org.spotube.millennium.theme.MillenniumDarkThemeComponents
 import org.spotube.millennium.theme.MillenniumLightThemeComponents
 import org.spotube.millennium.theme.MillenniumPalette
@@ -250,7 +254,7 @@ fun SpotubeTheme(
 
     val darkTheme = MillenniumDarkThemeComponents
     val lightTheme = MillenniumLightThemeComponents
-    
+
     val accent = Color(settings.accentColor)
     val colorSchemes = remember(settings.accentColor) {
         MillenniumColorSchemes(
@@ -274,7 +278,8 @@ fun SpotubeTheme(
                         separatorColor = Color.Transparent
                     )
                 ),
-                modalBottomSheetTheme = compactModalBottomSheetTheme()
+                modalBottomSheetTheme = compactModalBottomSheetTheme(),
+                sidebarTheme = flatSidebarTheme()
             ),
             light = lightTheme.copy(
                 topAppBarTheme = MillenniumTopAppBarTheme(
@@ -317,6 +322,34 @@ fun SpotubeTheme(
             }
         }
     }
+}
+
+/** Barre latérale à plat : sans fond, sans cadre, avec un liseré clair sur l'élément actif. */
+private fun flatSidebarTheme(): MillenniumSidebarTheme {
+    val base = defaultMillenniumSidebarTheme()
+    val clear = SolidColor(Color.Transparent)
+    return base.copy(
+        root = MillenniumControlStateProperty.resolveWith { state ->
+            base.root.resolve(state).copy(
+                background = clear,
+                borderWidth = 0.dp,
+                shadowElevation = 0.dp,
+                innerGlowColor = Color.Transparent
+            )
+        },
+        header = MillenniumControlStateProperty.resolveWith { state ->
+            base.header.resolve(state).copy(background = clear, dividerWidth = 0.dp)
+        },
+        footer = MillenniumControlStateProperty.resolveWith { state ->
+            base.footer.resolve(state).copy(background = clear, dividerWidth = 0.dp)
+        },
+        item = base.item.copy(
+            selected = base.item.selected.copy(
+                borderColor = Color.White.copy(alpha = 0.85f),
+                borderWidth = 2.dp
+            )
+        )
+    )
 }
 
 /** Library default is 24dp padding + 16dp spacing, which is far too roomy on phones. */
