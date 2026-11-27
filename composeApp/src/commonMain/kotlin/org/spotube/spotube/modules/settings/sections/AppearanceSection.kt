@@ -322,32 +322,5 @@ private fun AppearanceSettingCard(
 
 @Composable
 private fun HexField(label: String, value: String, onValueChange: (String) -> Unit) {
-    val parsed = value.parseHex()
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-        Box(
-            Modifier
-                .size(28.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(if (parsed != null) Color(parsed) else Color.Gray)
-                .border(1.dp, AppTheme.colors.outlineVariant, RoundedCornerShape(8.dp)))
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            MillenniumText(label, color = AppTheme.colors.onSurfaceVariant)
-            BasicTextField(
-                value = value,
-                onValueChange = { onValueChange(it.take(7)) },
-                singleLine = true,
-                textStyle = AppTheme.typography.bodyMedium.copy(color = AppTheme.colors.onSurface),
-                cursorBrush = SolidColor(AppTheme.colors.primary),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(AppTheme.colors.surfaceVariant)
-                    .padding(horizontal = 10.dp, vertical = 8.dp))
-        }
-    }
+    ColorPickerField(label, value, onValueChange)
 }
